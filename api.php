@@ -1,7 +1,6 @@
 <?php
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET');
+header("Content-Type: application/json");
+header("Access-Control-Allow-Origin: *");
 
 $servername = "localhost";
 $username = "movies_user";
@@ -14,18 +13,19 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM movies ORDER BY year DESC";
+$sql = "SELECT id, title, director, year, genre, rating FROM movies";
 $result = $conn->query($sql);
 
-$movies = [];
+$data = [];
 
 if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $movies[] = $row;
+    while($row = $result->fetch_assoc()) {
+        $data[] = $row;
     }
+} else {
+    echo "0 results";
 }
+echo json_encode($data);
 
 $conn->close();
-
-echo json_encode($movies);
 ?>
